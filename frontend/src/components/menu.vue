@@ -3,7 +3,8 @@
         <!-- 展开时：Logo + 搜索/折叠按钮同行 -->
         <div class="logo_row" v-if="!uiStore.sidebarCollapsed">
             <div class="logo_box" @click="router.push('/platform/knowledge-bases')" style="cursor: pointer;">
-                <img class="logo" src="@/assets/img/weknora.png" alt="">
+                <img class="logo logo--light" src="@/assets/img/logo-ai.png" alt="点之出众">
+                <img class="logo logo--dark" src="@/assets/img/logo-ai-dark.png" alt="点之出众">
                 <sup v-if="isLiteEdition" class="lite-badge">Lite</sup>
             </div>
             <div class="logo_actions">
@@ -1282,8 +1283,14 @@ const onDragHandleMouseDown = (e: MouseEvent) => {
         overflow: hidden;
 
         .logo {
-            width: 128px;
+            // 点之出众 logo 是横向锁版（宽高比约 4.84），比原 WeKnora 字标更宽
+            width: 148px;
             height: auto;
+        }
+
+        // 两个变体只显示其一：浅色底用深色字，深色底用白色字
+        .logo--dark {
+            display: none;
         }
 
         .lite-badge {
@@ -1903,9 +1910,13 @@ const onDragHandleMouseDown = (e: MouseEvent) => {
 }
 </style>
 <style lang="less">
-// Dark mode: invert dark logo to light
-html[theme-mode="dark"] .aside_box .logo_box .logo {
-    filter: invert(1) hue-rotate(180deg);
+// Dark mode: 切换到白色字标的变体。不能用 filter: invert()，会破坏图标与 AI 字样的渐变色
+html[theme-mode="dark"] .aside_box .logo_box .logo--light {
+    display: none;
+}
+
+html[theme-mode="dark"] .aside_box .logo_box .logo--dark {
+    display: inline;
 }
 
 // Dark mode: 滚动条在深色背景下需要更亮的颜色才看得见
